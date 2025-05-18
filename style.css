@@ -1,179 +1,185 @@
-/* style.css */
+/* Variables */
+:root {
+  --bg-light: #f5f7fa;
+  --bg-dark: #1a1b1e;
+  --text-light: #1a1b1e;
+  --text-dark: #f5f7fa;
+  --primary: #00bfa5;
+  --secondary: #00796b;
+  --card-bg-light: #ffffff;
+  --card-bg-dark: #2a2b2e;
+  --border-radius: 12px;
+  --transition: 0.3s ease;
+}
 
-/* Modo claro/oscuro automático */
+/* Modo oscuro automático */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117;
-    --card-bg: #161b22;
-    --text: #c9d1d9;
-    --accent: #58a6ff;
-    --border: #30363d;
-    --shadow: rgba(255, 255, 255, 0.05);
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
   }
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f5f7fa;
-    --card-bg: #ffffff;
-    --text: #1c1e21;
-    --accent: #0077ff;
-    --border: #e1e4e8;
-    --shadow: rgba(0, 0, 0, 0.05);
+
+  header, section {
+    background-color: var(--card-bg-dark);
+  }
+
+  input, button {
+    background-color: #333;
+    color: var(--text-dark);
+    border: 1px solid #555;
   }
 }
 
-* {
-  box-sizing: border-box;
+/* Estilos base */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-light);
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  padding: 2rem;
   line-height: 1.6;
+  transition: var(--transition);
 }
 
 #app {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
+/* Encabezado */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--card-bg);
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px var(--shadow);
-  border: 1px solid var(--border);
+  background-color: var(--card-bg-light);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: var(--transition);
 }
 
 header h1 {
+  margin: 0;
   font-size: 1.8rem;
-  color: var(--accent);
+  color: var(--primary);
 }
 
 #connectWallet {
-  background-color: var(--accent);
-  color: #fff;
-  padding: 0.6rem 1.2rem;
+  padding: 10px 18px;
   border: none;
-  border-radius: 10px;
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: var(--transition);
 }
 
 #connectWallet:hover {
-  background-color: #005edb;
+  background-color: var(--secondary);
 }
 
 #walletAddress {
-  margin-top: 0.5rem;
+  margin-top: 10px;
   font-size: 0.9rem;
-  opacity: 0.8;
+  color: #888;
 }
 
+/* Secciones */
 section {
-  background: var(--card-bg);
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 12px var(--shadow);
+  background-color: var(--card-bg-light);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: var(--transition);
 }
 
 section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--accent);
+  margin-top: 0;
+  color: var(--primary);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
+/* Listas de estadísticas */
+.stats ul, .user ul {
+  list-style: none;
+  padding-left: 0;
 }
 
-.grid > div {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  padding: 1rem;
-  border-radius: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.stats li, .user li {
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 8px;
+  transition: var(--transition);
 }
 
-.grid > div:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px var(--shadow);
-}
-
-input[type="number"] {
+/* Acciones */
+.actions input[type="number"] {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   width: 100%;
-  padding: 0.6rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 0.5rem;
-  background-color: var(--bg);
-  color: var(--text);
+  max-width: 300px;
+  transition: var(--transition);
 }
 
-button {
-  display: inline-block;
-  padding: 0.6rem 1rem;
-  margin: 0.3rem 0.3rem 1rem 0;
-  background: var(--accent);
-  color: white;
+.actions button {
+  padding: 10px 16px;
+  margin: 8px 5px 8px 0;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 
-button:hover {
-  background-color: #005edb;
-  transform: scale(1.05);
+.actions button:hover {
+  background-color: var(--secondary);
 }
 
-ol {
-  padding-left: 1.2rem;
-  list-style: decimal;
-  max-height: 400px;
+/* Rankings */
+.rankings ol {
+  padding-left: 20px;
+  max-height: 300px;
   overflow-y: auto;
-  font-size: 0.95rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  padding: 10px;
 }
 
-ol li {
-  padding: 0.3rem 0;
-  border-bottom: 1px dashed var(--border);
+.rankings li {
+  margin: 5px 0;
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 5px;
 }
 
+/* Scroll personalizado */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 6px;
+  background-color: var(--primary);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-@media (max-width: 768px) {
+/* Responsive */
+@media screen and (max-width: 768px) {
   header {
     flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+    align-items: flex-start;
   }
 
-  button {
+  .actions button, .actions input[type="number"] {
     width: 100%;
-  }
-
-  input[type="number"] {
-    margin-bottom: 1rem;
+    max-width: none;
   }
 }
