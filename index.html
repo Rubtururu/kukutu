@@ -6,7 +6,7 @@
   <title>Smart Staking BNB - dApp</title>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
@@ -32,6 +32,7 @@
       <li>Pending Rewards: <strong id="userPendingRewards">-</strong> BNB</li>
       <li>Daily Dividend Estimate: <strong id="userDailyEstimate">-</strong> BNB</li>
       <li>Mi Share: <strong id="userShare">-</strong></li>
+      <li>Próximo Pago en: <strong id="countdown">Cargando...</strong></li>
     </ul>
   </section>
 
@@ -70,7 +71,7 @@
   </section>
 
   <section>
-    <h2>Histórico Pool de Dividendos (Ejemplo)</h2>
+    <h2>Histórico Pool de Dividendos</h2>
     <canvas id="dividendChart" width="600" height="300"></canvas>
   </section>
 
