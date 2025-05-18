@@ -1,229 +1,87 @@
-/* ====== VARIABLES ====== */
-:root {
-  --font-sans: 'Inter', sans-serif;
-
-  /* Light mode colors */
-  --color-bg-light: #f9fafb;
-  --color-card-light: #ffffff;
-  --color-text-light: #1f2937;
-  --color-secondary-light: #6b7280;
-  --color-border-light: #e5e7eb;
-  --color-accent-light: #3b82f6;
-
-  /* Dark mode colors */
-  --color-bg-dark: #0f172a;
-  --color-card-dark: #1e293b;
-  --color-text-dark: #f3f4f6;
-  --color-secondary-dark: #9ca3af;
-  --color-border-dark: #334155;
-  --color-accent-dark: #60a5fa;
-
-  /* Shared colors */
-  --radius: 1.25rem;
-  --transition: 0.3s ease;
-  --shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+* {
+    box-sizing: border-box;
 }
-
-/* ====== DARK MODE SUPPORT ====== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: var(--color-bg-dark);
-    --color-card: var(--color-card-dark);
-    --color-text: var(--color-text-dark);
-    --color-secondary: var(--color-secondary-dark);
-    --color-border: var(--color-border-dark);
-    --color-accent: var(--color-accent-dark);
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: var(--color-bg-light);
-    --color-card: var(--color-card-light);
-    --color-text: var(--color-text-light);
-    --color-secondary: var(--color-secondary-light);
-    --color-border: var(--color-border-light);
-    --color-accent: var(--color-accent-light);
-  }
-}
-
-/* ====== GLOBAL STYLES ====== */
 body {
-  margin: 0;
-  font-family: var(--font-sans);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color var(--transition), color var(--transition);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    padding: 0;
 }
-
-h1, h2, h3 {
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: 0.5rem;
-}
-
-p {
-  color: var(--color-secondary);
-  line-height: 1.6;
-  margin: 0.5rem 0;
-}
-
-a {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-button {
-  background-color: var(--color-accent);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color var(--transition), transform var(--transition);
-}
-
-button:hover {
-  background-color: darken(var(--color-accent), 10%);
-  transform: scale(1.03);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ====== LAYOUT ====== */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.section {
-  margin-bottom: 3rem;
-}
-
-.grid {
-  display: grid;
-  gap: 2rem;
-}
-
-.grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-/* ====== CARDS ====== */
-.card {
-  background-color: var(--color-card);
-  border-radius: var(--radius);
-  padding: 2rem;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--color-border);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.card-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-/* ====== INPUTS ====== */
-input[type="text"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background-color: var(--color-card);
-  color: var(--color-text);
-  transition: border-color var(--transition), box-shadow var(--transition);
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-
-/* ====== ANIMATIONS ====== */
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 1s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* ====== HEADER ====== */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
+    background-color: #1f1f1f;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-
-header h1 {
-  font-size: 2rem;
+h1 {
+    margin: 0;
+    font-weight: 700;
 }
-
-.mode-toggle {
-  padding: 0.5rem 1rem;
-  background: none;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  border-radius: var(--radius);
-  cursor: pointer;
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 768px) {
-  .grid-2, .grid-3 {
-    grid-template-columns: 1fr;
-  }
-
-  header {
-    flex-direction: column;
-    gap: 1rem;
-  }
+button:hover {
+    background-color: #45a049;
 }
-
-/* ====== FOOTER ====== */
-footer {
-  margin-top: auto;
-  text-align: center;
-  padding: 2rem 0;
-  color: var(--color-secondary);
-  font-size: 0.9rem;
+main {
+    padding: 2rem;
+    max-width: 900px;
+    margin: auto;
+}
+section {
+    margin-bottom: 2rem;
+    background: #222;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #0f0;
+}
+h2 {
+    margin-top: 0;
+    color: #4caf50;
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+li {
+    padding: 0.3rem 0;
+    font-size: 1.1rem;
+}
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+input[type="number"] {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background: #121212;
+    color: #eee;
+}
+#messages {
+    padding: 1rem;
+    color: #ff5555;
+    font-weight: 700;
+    min-height: 24px;
+}
+#userAddress {
+    font-size: 0.9rem;
+    color: #ccc;
+    font-family: monospace;
+}
+#userActions button {
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
 }
