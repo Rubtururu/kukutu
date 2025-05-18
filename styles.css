@@ -1,428 +1,229 @@
-/* ===== Reset y Base ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap');
-
+/* ====== VARIABLES ====== */
 :root {
-  --color-primary: #ffcc00;
-  --color-primary-hover: #e6b800;
-  --color-bg-dark: #121214;
-  --color-bg-light: #f0f0f3;
-  --color-text-light: #fefefe;
-  --color-text-dark: #222222;
-  --color-card-bg-dark: #1f1f23;
-  --color-card-bg-light: #ffffff;
-  --color-shadow-dark: rgba(255, 204, 0, 0.5);
-  --color-shadow-light: rgba(0, 0, 0, 0.1);
-  --color-success: #4ade80;
-  --color-danger: #ef4444;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Light mode colors */
+  --color-bg-light: #f9fafb;
+  --color-card-light: #ffffff;
+  --color-text-light: #1f2937;
+  --color-secondary-light: #6b7280;
+  --color-border-light: #e5e7eb;
+  --color-accent-light: #3b82f6;
+
+  /* Dark mode colors */
+  --color-bg-dark: #0f172a;
+  --color-card-dark: #1e293b;
+  --color-text-dark: #f3f4f6;
+  --color-secondary-dark: #9ca3af;
+  --color-border-dark: #334155;
+  --color-accent-dark: #60a5fa;
+
+  /* Shared colors */
+  --radius: 1.25rem;
+  --transition: 0.3s ease;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* ====== DARK MODE SUPPORT ====== */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: var(--color-bg-dark);
-    --color-text: var(--color-text-light);
-    --color-card-bg: var(--color-card-bg-dark);
-    --color-shadow: var(--color-shadow-dark);
+    --color-card: var(--color-card-dark);
+    --color-text: var(--color-text-dark);
+    --color-secondary: var(--color-secondary-dark);
+    --color-border: var(--color-border-dark);
+    --color-accent: var(--color-accent-dark);
   }
 }
+
 @media (prefers-color-scheme: light) {
   :root {
     --color-bg: var(--color-bg-light);
-    --color-text: var(--color-text-dark);
-    --color-card-bg: var(--color-card-bg-light);
-    --color-shadow: var(--color-shadow-light);
+    --color-card: var(--color-card-light);
+    --color-text: var(--color-text-light);
+    --color-secondary: var(--color-secondary-light);
+    --color-border: var(--color-border-light);
+    --color-accent: var(--color-accent-light);
   }
 }
 
-html, body {
+/* ====== GLOBAL STYLES ====== */
+body {
   margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: background-color var(--transition), color var(--transition);
   min-height: 100vh;
-  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 }
 
 h1, h2, h3 {
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-h1 {
-  font-weight: 800;
-  font-size: 3rem;
-  text-shadow: 0 0 10px var(--color-primary);
-  margin-bottom: 0.3em;
-}
-
-h2 {
-  font-weight: 700;
-  font-size: 1.8rem;
-  margin-bottom: 0.6em;
-  position: relative;
-}
-
-h2::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), transparent);
-  border-radius: 5px;
-  margin-top: 0.2em;
-}
-
-/* Botón Conectar Wallet */
-#connectWalletBtn {
-  background: var(--color-primary);
-  color: black;
-  font-weight: 700;
-  padding: 0.7em 1.8em;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 0 10px var(--color-primary);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-  font-size: 1.1rem;
-  user-select: none;
-  letter-spacing: 0.05em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-  overflow: hidden;
-}
-
-#connectWalletBtn:hover, #connectWalletBtn:focus {
-  background-color: var(--color-primary-hover);
-  box-shadow: 0 0 20px var(--color-primary);
-  transform: scale(1.05);
-  outline: none;
-}
-
-#connectWalletBtn::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  border-radius: 12px;
-}
-
-#connectWalletBtn:hover::before {
-  opacity: 1;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.8); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 0; }
-  100% { transform: scale(0.8); opacity: 0.5; }
-}
-
-/* Contenedor general */
-.container {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem 1rem;
-}
-
-/* Estadísticas Globales & Usuario */
-section {
-  margin-bottom: 3rem;
-}
-
-/* Cards */
-section > div, section > .grid > div {
-  background: var(--color-card-bg);
-  border-radius: 16px;
-  box-shadow:
-    0 4px 15px var(--color-shadow),
-    inset 0 -2px 4px rgba(255 255 255 / 0.1);
-  padding: 1.8rem 2rem;
+  font-weight: 600;
   color: var(--color-text);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  border: 2px solid transparent;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-
-section > div:hover, section > .grid > div:hover {
-  box-shadow:
-    0 0 25px var(--color-primary),
-    inset 0 -2px 10px rgba(255 255 255 / 0.15);
-  transform: translateY(-6px);
-  border-color: var(--color-primary);
-}
-
-/* Glow animado */
-@keyframes glowPulse {
-  0%, 100% {
-    box-shadow:
-      0 0 8px var(--color-primary),
-      0 0 20px var(--color-primary);
-  }
-  50% {
-    box-shadow:
-      0 0 15px var(--color-primary),
-      0 0 35px var(--color-primary);
-  }
-}
-
-/* Estadísticas específicas con glow */
-#totalStaked:hover,
-#totalTreasury:hover,
-#dailyDividend:hover,
-#activeStakers:hover,
-#totalBNBStakedHistorical:hover,
-#totalDividendsDistributed:hover,
-#timeUntilNextDistribution:hover,
-#userStaked:hover,
-#userPendingRewards:hover,
-#userTotalReceived:hover,
-#userDailyEstimate:hover,
-#userShare:hover {
-  animation: glowPulse 3s ease-in-out infinite;
-  border-color: var(--color-primary);
-}
-
-/* Texto y números */
-h2, h3 {
-  color: var(--color-primary);
+  margin-bottom: 0.5rem;
 }
 
 p {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 1.7rem;
-  color: var(--color-text);
-  margin-top: 0.2rem;
-  letter-spacing: 0.05em;
+  color: var(--color-secondary);
+  line-height: 1.6;
+  margin: 0.5rem 0;
 }
 
-/* Scroll personalizado para rankings */
-#stakeRankingList, #dividendRankingList {
-  max-height: 24rem;
-  overflow-y: auto;
-  padding-right: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) transparent;
+a {
+  color: var(--color-accent);
+  text-decoration: none;
 }
 
-#stakeRankingList::-webkit-scrollbar,
-#dividendRankingList::-webkit-scrollbar {
-  width: 8px;
+a:hover {
+  text-decoration: underline;
 }
 
-#stakeRankingList::-webkit-scrollbar-thumb,
-#dividendRankingList::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary);
-  border-radius: 20px;
+button {
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
 }
 
-#stakeRankingList::-webkit-scrollbar-track,
-#dividendRankingList::-webkit-scrollbar-track {
-  background: transparent;
+button:hover {
+  background-color: darken(var(--color-accent), 10%);
+  transform: scale(1.03);
 }
 
-/* Lista rankings */
-#stakeRankingList li, #dividendRankingList li {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--color-primary-hover);
-  transition: background-color 0.3s ease;
-  cursor: default;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-#stakeRankingList li:hover, #dividendRankingList li:hover {
-  background-color: rgba(255 204 0 / 0.15);
-  font-weight: 700;
-}
-
-/* Wallet Address */
-#walletAddress {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--color-success);
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  user-select: all;
-}
-
-/* Responsive y rejilla adaptativa */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.4rem;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  p {
-    font-size: 1.3rem;
-  }
-
-  section > .grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  #stakeRankingList, #dividendRankingList {
-    max-height: 15rem;
-  }
-}
-
-/* Microinteracciones en listas */
-#stakeRankingList li::before,
-#dividendRankingList li::before {
-  content: '🔥';
-  margin-right: 8px;
-  opacity: 0;
-  transform: translateX(-10px);
-  display: inline-block;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#stakeRankingList li:hover::before,
-#dividendRankingList li:hover::before {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Efecto pulsante en números importantes */
-@keyframes pulseNumber {
-  0%, 100% {
-    transform: scale(1);
-    text-shadow: 0 0 10px var(--color-primary);
-  }
-  50% {
-    transform: scale(1.05);
-    text-shadow: 0 0 25px var(--color-primary);
-  }
-}
-
-p.text-2xl {
-  animation: pulseNumber 4s ease-in-out infinite;
-}
-
-/* Subrayados animados para h3 */
-h3 {
-  position: relative;
-  color: var(--color-primary);
-  cursor: default;
-}
-
-h3::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), transparent);
-  transition: width 0.4s ease;
-  border-radius: 3px;
-}
-
-h3:hover::after {
+/* ====== LAYOUT ====== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
 }
 
-/* Transiciones suaves para todo */
-* {
-  transition: all 0.3s ease;
+.section {
+  margin-bottom: 3rem;
 }
 
-/* Animación loader suave para “Loading...” */
-.loading {
-  display: inline-block;
-  position: relative;
-  color: var(--color-primary);
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ====== CARDS ====== */
+.card {
+  background-color: var(--color-card);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--color-border);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-value {
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  color: var(--color-accent);
 }
 
-.loading::after {
-  content: '...';
-  animation: dots 1.5s steps(3, end) infinite;
+/* ====== INPUTS ====== */
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-card);
+  color: var(--color-text);
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-@keyframes dots {
-  0%, 20% {
-    color: transparent;
-    text-shadow: none;
-  }
-  40% {
-    color: var(--color-primary);
-    text-shadow: 0 0 8px var(--color-primary);
-  }
-  60% {
-    color: var(--color-primary);
-    text-shadow: 0 0 8px var(--color-primary);
-  }
-  80%, 100% {
-    color: transparent;
-    text-shadow: none;
-  }
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-/* Colores para valores positivos/negativos en recompensas si quieres */
-.positive {
-  color: var(--color-success);
-  font-weight: 800;
-}
-
-.negative {
-  color: var(--color-danger);
-  font-weight: 800;
-}
-
-/* Extras: Tooltip simple para mostrar info al pasar sobre los stats */
-/* Agrega data-tooltip="Texto" a cualquier elemento para que aparezca tooltip */
-[data-tooltip] {
-  position: relative;
-  cursor: help;
-}
-
-[data-tooltip]::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: 50%;
-  bottom: 110%;
-  transform: translateX(-50%);
-  background: var(--color-primary);
-  color: black;
-  padding: 4px 8px;
-  font-size: 0.75rem;
-  border-radius: 6px;
+/* ====== ANIMATIONS ====== */
+.fade-in {
   opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
-[data-tooltip]:hover::after {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Animación suave de aparición para todo el container */
-.container {
-  animation: fadeInUp 1s ease forwards;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
   to {
     opacity: 1;
-    transform: translateY(0);
   }
+}
+
+/* ====== HEADER ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+.mode-toggle {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* ====== FOOTER ====== */
+footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--color-secondary);
+  font-size: 0.9rem;
 }
