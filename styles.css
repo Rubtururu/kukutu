@@ -1,0 +1,156 @@
+/* === Reset y fuentes === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #00d395;
+  --secondary: #121e2c;
+  --background-light: #f4f6f8;
+  --background-dark: #0e1117;
+  --text-light: #ffffff;
+  --text-dark: #0e1117;
+  --card-light: #ffffff;
+  --card-dark: #1e2a38;
+  --border-radius: 16px;
+  --transition: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+body.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-light);
+}
+
+.container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 2rem;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* === Tarjetas === */
+.card {
+  background-color: var(--card-light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+body.dark-mode .card {
+  background-color: var(--card-dark);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* === Botones === */
+.button {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.button:hover {
+  background: #00b37d;
+}
+
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* === Toggle Dark Mode === */
+.toggle-mode {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  z-index: 999;
+}
+
+/* === Rankings y tablas === */
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.ranking-table th, .ranking-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+body.dark-mode .ranking-table th,
+body.dark-mode .ranking-table td {
+  border-color: #333;
+}
+
+/* === Gráficos === */
+.chart-container {
+  margin-top: 3rem;
+  background-color: var(--card-light);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+}
+
+body.dark-mode .chart-container {
+  background-color: var(--card-dark);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toggle-mode {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
