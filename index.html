@@ -73,6 +73,40 @@
       </div>
     </section>
 
+    <!-- Interacción con el contrato -->
+    <section class="contract-actions">
+      <h2 class="section-title">Acciones Disponibles</h2>
+      <div class="actions-grid">
+
+        <!-- Stake -->
+        <div class="card action-card">
+          <h3>Hacer Stake</h3>
+          <input type="number" id="stakeAmount" class="input-field" placeholder="Cantidad en BNB" min="0.01" step="0.01" />
+          <button id="stakeBtn" class="btn-primary">Stake</button>
+        </div>
+
+        <!-- Retirar todo -->
+        <div class="card action-card">
+          <h3>Retirar Todo el Stake</h3>
+          <button id="withdrawAllBtn" class="btn-secondary">Retirar Todo</button>
+        </div>
+
+        <!-- Retiro parcial -->
+        <div class="card action-card">
+          <h3>Retiro Parcial</h3>
+          <input type="number" id="withdrawAmount" class="input-field" placeholder="Cantidad en BNB" min="0.01" step="0.01" />
+          <button id="withdrawPartialBtn" class="btn-secondary">Retiro Parcial</button>
+        </div>
+
+        <!-- Reclamar dividendos -->
+        <div class="card action-card">
+          <h3>Reclamar Dividendos</h3>
+          <button id="claimDividendsBtn" class="btn-accent">Reclamar</button>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Rankings -->
     <section class="rankings">
       <h2 class="section-title">Top 50 Rankings</h2>
