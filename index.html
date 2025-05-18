@@ -3,90 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Staking BNB Avanzado</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- CDN Web3 -->
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-  <!-- CDN Chart.js para la gráfica -->
+  <title>Smart Staking BNB - dApp</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h1>Smart Staking BNB Avanzado</h1>
-    <button id="connectWalletBtn">Conectar MetaMask</button>
-    <p>Wallet: <span id="walletAddress">No conectado</span></p>
+    <h1>Smart Staking BNB</h1>
+    <button id="connectWalletBtn">Conectar Wallet</button>
+    <p>Wallet conectada: <span id="walletAddress">No conectado</span></p>
   </header>
 
-  <section id="globalStats">
+  <section>
     <h2>Estadísticas Globales</h2>
     <ul>
-      <li>Total Staked: <span id="totalStaked">-</span> BNB</li>
-      <li>Total Treasury: <span id="totalTreasury">-</span> BNB</li>
-      <li>Dividendo Diario Total: <span id="dailyDividend">-</span> BNB</li>
-      <li>Stakers Activos: <span id="activeStakers">-</span></li>
+      <li>Total Staked: <strong id="totalStaked">-</strong> BNB</li>
+      <li>Total Treasury: <strong id="totalTreasury">-</strong> BNB</li>
+      <li>Daily Dividend: <strong id="dailyDividend">-</strong> BNB</li>
+      <li>Active Stakers: <strong id="activeStakers">-</strong></li>
     </ul>
   </section>
 
-  <section id="userStats">
-    <h2>Estadísticas Usuario</h2>
+  <section>
+    <h2>Mis Estadísticas</h2>
     <ul>
-      <li>BNB en Stake: <span id="userStaked">-</span></li>
-      <li>Recompensas Pendientes: <span id="userPendingRewards">-</span> BNB</li>
-      <li>Estimación Diaria: <span id="userDailyEstimate">-</span> BNB</li>
-      <li>Participación: <span id="userShare">-</span></li>
-      <li>Tiempo hasta próximo dividendo: <span id="userNextDistribution">-</span></li>
+      <li>BNB Staked: <strong id="userStaked">-</strong> BNB</li>
+      <li>Pending Rewards: <strong id="userPendingRewards">-</strong> BNB</li>
+      <li>Daily Dividend Estimate: <strong id="userDailyEstimate">-</strong> BNB</li>
+      <li>Mi Share: <strong id="userShare">-</strong></li>
     </ul>
   </section>
 
-  <section id="actions">
+  <section>
     <h2>Acciones</h2>
-
-    <div class="action-block">
-      <h3>Hacer Stake</h3>
-      <input type="number" id="stakeAmount" placeholder="Cantidad en BNB" step="0.001" min="0" />
+    <div>
+      <label for="stakeAmount">Cantidad a stakear (BNB): </label>
+      <input type="number" id="stakeAmount" step="0.0001" min="0" />
       <button onclick="stake()">Stake</button>
     </div>
-
-    <div class="action-block">
-      <h3>Retirar Stake Completo</h3>
-      <button onclick="withdrawStake()">Retirar todo</button>
+    <div>
+      <button onclick="withdrawStake()">Retirar todo el Stake</button>
     </div>
-
-    <div class="action-block">
-      <h3>Retirar Stake Parcial</h3>
-      <input type="number" id="withdrawAmount" placeholder="Cantidad en BNB" step="0.001" min="0" />
-      <button onclick="withdrawPartialStake()">Retirar parcial</button>
+    <div>
+      <label for="withdrawAmount">Cantidad a retirar parcialmente (BNB): </label>
+      <input type="number" id="withdrawAmount" step="0.0001" min="0" />
+      <button onclick="withdrawPartialStake()">Retirar Parcial</button>
     </div>
-
-    <div class="action-block">
-      <h3>Retirar Recompensas</h3>
-      <button onclick="withdrawRewards()">Retirar recompensas</button>
+    <div>
+      <button onclick="withdrawRewards()">Retirar Recompensas</button>
     </div>
   </section>
 
-  <section id="rankings">
-    <h2>Rankings Top 50</h2>
-
-    <div class="ranking-block">
-      <h3>Top Stakers</h3>
-      <ol id="stakeRankingList">
-        <li>Cargando...</li>
-      </ol>
-    </div>
-
-    <div class="ranking-block">
-      <h3>Top Receptores de Dividendos</h3>
-      <ol id="dividendRankingList">
-        <li>Cargando...</li>
-      </ol>
-    </div>
+  <section>
+    <h2>Ranking Top 50 Stakers</h2>
+    <ol id="stakeRankingList">
+      <li>Cargando...</li>
+    </ol>
   </section>
 
-  <section id="chartSection">
-    <h2>Gráfica Pool Dividendos</h2>
+  <section>
+    <h2>Ranking Top 50 Dividendos</h2>
+    <ol id="dividendRankingList">
+      <li>Cargando...</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Histórico Pool de Dividendos (Ejemplo)</h2>
     <canvas id="dividendChart" width="600" height="300"></canvas>
   </section>
 
-  <script src="app.js"></script>
+  <script src="tuArchivo.js"></script>
 </body>
 </html>
