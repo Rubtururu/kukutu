@@ -1,186 +1,186 @@
-// Configuración de contrato
-const contractAddress = '0x4f395877f7f82b5012F9d4aD092249444A93258e';
-const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"DividendsDistributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"activeStakers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributeDividends","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getGlobalStats","outputs":[{"internalType":"uint256","name":"_totalStaked","type":"uint256"},{"internalType":"uint256","name":"_totalTreasury","type":"uint256"},{"internalType":"uint256","name":"_totalDividendsDistributed","type":"uint256"},{"internalType":"uint256","name":"_totalBNBStakedHistorical","type":"uint256"},{"internalType":"uint256","name":"_dailyDividend","type":"uint256"},{"internalType":"uint256","name":"_activeStakers","type":"uint256"},{"internalType":"uint256","name":"_timeUntilNextDistribution","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopEarners","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopStakers","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserStats","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"},{"internalType":"uint256","name":"dailyEstimate","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"hasStaked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastDistribution","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakerList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBNBStakedHistorical","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalDividendsDistributed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTreasury","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastUpdate","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawPartialStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+// app.js
 
-let web3;
-let contract;
-let userAddress;
+const CONTRACT_ADDRESS = "0x4f395877f7f82b5012F9d4aD092249444A93258e";
 
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
-  document.getElementById('stakeBtn').addEventListener('click', stakeBNB);
-  document.getElementById('withdrawAllBtn').addEventListener('click', withdrawAll);
-  document.getElementById('withdrawAmountBtn').addEventListener('click', withdrawAmount);
-  document.getElementById('claimBtn').addEventListener('click', claimRewards);
+// ABI del contrato (simplificada, debes reemplazar con la ABI completa)
+const ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"DividendsDistributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"activeStakers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributeDividends","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getGlobalStats","outputs":[{"internalType":"uint256","name":"_totalStaked","type":"uint256"},{"internalType":"uint256","name":"_totalTreasury","type":"uint256"},{"internalType":"uint256","name":"_totalDividendsDistributed","type":"uint256"},{"internalType":"uint256","name":"_totalBNBStakedHistorical","type":"uint256"},{"internalType":"uint256","name":"_dailyDividend","type":"uint256"},{"internalType":"uint256","name":"_activeStakers","type":"uint256"},{"internalType":"uint256","name":"_timeUntilNextDistribution","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopEarners","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopStakers","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserStats","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"},{"internalType":"uint256","name":"dailyEstimate","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"hasStaked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastDistribution","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakerList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBNBStakedHistorical","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalDividendsDistributed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTreasury","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastUpdate","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawPartialStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+
+let web3, contract, userAddress;
+
+window.addEventListener("load", async () => {
+  if (window.ethereum) {
+    try {
+      web3 = new Web3(window.ethereum);
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts = await web3.eth.getAccounts();
+      userAddress = accounts[0];
+      contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
+
+      // Cargar datos iniciales
+      await loadStats();
+
+      // Escuchar cambio de cuenta en MetaMask
+      window.ethereum.on("accountsChanged", (accounts) => {
+        userAddress = accounts[0];
+        loadStats();
+      });
+
+    } catch (error) {
+      alert("Error al conectar MetaMask: " + error.message);
+      console.error(error);
+    }
+  } else {
+    alert("MetaMask no detectado. Por favor instala MetaMask.");
+  }
 });
 
-async function connectWallet() {
-  if (!window.ethereum) return alert('MetaMask no está instalado.');
+async function loadStats() {
   try {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
-    web3 = new Web3(window.ethereum);
-    const accounts = await web3.eth.getAccounts();
-    userAddress = accounts[0];
+    // Mostrar loaders
+    setLoading(true);
 
-    contract = new web3.eth.Contract(contractABI, contractAddress);
-    document.getElementById('walletAddress').textContent = formatAddress(userAddress);
+    // Obtener stats globales y de usuario
+    const global = await contract.methods.getGlobalStats().call();
+    const user = await contract.methods.getUserStats(userAddress).call();
 
-    await loadAllStats();
-    await loadUserStats();
-    await loadRankings();
-
-    setInterval(() => {
-      loadAllStats();
-      loadUserStats();
-      loadRankings();
-    }, 30000);
-
-  } catch (error) {
-    console.error('Error al conectar la wallet:', error);
-  }
-}
-
-// Cargar estadísticas
-async function loadAllStats() {
-  try {
-    const stats = await contract.methods.getGlobalStats().call();
-    setText('totalStaked', formatBNB(stats._totalStaked));
-    setText('totalTreasury', formatBNB(stats._totalTreasury));
-    setText('dailyDividend', formatBNB(stats._dailyDividend));
-    setText('activeStakers', stats._activeStakers);
-    setText('totalDividendsDistributed', formatBNB(stats._totalDividendsDistributed));
-    setText('totalBNBStakedHistorical', formatBNB(stats._totalBNBStakedHistorical));
-    setText('timeUntilNextDistribution', formatTime(stats._timeUntilNextDistribution));
-  } catch (error) {
-    console.error('Error al cargar estadísticas globales:', error);
-  }
-}
-
-async function loadUserStats() {
-  try {
-    const stats = await contract.methods.getUserStats(userAddress).call();
-    setText('userStaked', formatBNB(stats.stakedAmount));
-    setText('userPendingRewards', formatBNB(stats.pendingRewards));
-    setText('userTotalReceived', formatBNB(stats.totalReceived));
-    setText('userDailyEstimate', formatBNB(stats.dailyEstimate));
-    setText('userShare', `${(parseFloat(stats.userShare) / 1e16).toFixed(2)} %`);
-  } catch (error) {
-    console.error('Error al cargar estadísticas de usuario:', error);
-  }
-}
-
-async function loadRankings() {
-  try {
+    // Rankings
     const topStakers = await contract.methods.getTopStakers().call();
     const topEarners = await contract.methods.getTopEarners().call();
 
-    const stakeList = document.getElementById('stakeRankingList');
-    const earnList = document.getElementById('dividendRankingList');
-    stakeList.innerHTML = '';
-    earnList.innerHTML = '';
+    // Mostrar estadísticas globales
+    document.getElementById("totalStaked").innerText = formatBNB(global.totalStaked);
+    document.getElementById("treasury").innerText = formatBNB(global.totalTreasury);
+    document.getElementById("dividendPool").innerText = formatBNB(global.totalDividendPool);
+    document.getElementById("totalRewards").innerText = formatBNB(global.totalRewardsDistributed);
+    document.getElementById("totalUsers").innerText = global.totalUsers;
 
-    for (let i = 0; i < topStakers.length; i++) {
-      const address = topStakers[i];
-      if (address === '0x0000000000000000000000000000000000000000') continue;
+    // Mostrar estadísticas usuario
+    document.getElementById("myStake").innerText = formatBNB(user.stakedAmount);
+    document.getElementById("myRewards").innerText = formatBNB(user.pendingRewards);
+    document.getElementById("dailyEstimate").innerText = formatBNB(user.dailyEstimate);
+    document.getElementById("nextReward").innerText = formatTime(user.secondsUntilNextDistribution);
 
-      const stats = await contract.methods.getUserStats(address).call();
-      const li = document.createElement('li');
-      li.textContent = `#${i + 1} ${formatAddress(address)} - ${formatBNB(stats.stakedAmount)} BNB`;
-      stakeList.appendChild(li);
-    }
+    // Renderizar rankings
+    renderRanking(topStakers, "topStakers", "stake");
+    renderRanking(topEarners, "topEarners", "rewards");
 
-    for (let i = 0; i < topEarners.length; i++) {
-      const address = topEarners[i];
-      if (address === '0x0000000000000000000000000000000000000000') continue;
-
-      const stats = await contract.methods.getUserStats(address).call();
-      const li = document.createElement('li');
-      li.textContent = `#${i + 1} ${formatAddress(address)} - ${formatBNB(stats.totalReceived)} BNB`;
-      earnList.appendChild(li);
-    }
   } catch (error) {
-    console.error('Error al cargar rankings:', error);
+    console.error("Error cargando estadísticas:", error);
+    alert("Error cargando datos del contrato. Revisa consola.");
+  } finally {
+    setLoading(false);
   }
 }
 
-// Funciones de staking
-async function stakeBNB() {
-  const amount = document.getElementById('stakeAmountInput').value;
-  if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-    return alert('Introduce una cantidad válida de BNB para hacer stake.');
-  }
+function renderRanking(list, elementId, type) {
+  const ul = document.getElementById(elementId);
+  ul.innerHTML = "";
 
-  try {
-    const value = web3.utils.toWei(amount, 'ether');
-    await contract.methods.stake().send({ from: userAddress, value });
-    alert('Stake exitoso');
-    await loadUserStats();
-    await loadAllStats();
-  } catch (error) {
-    console.error('Error al hacer stake:', error);
-    alert('Error al hacer stake.');
-  }
-}
+  list.forEach((entry, index) => {
+    let amount = "0";
+    if (type === "stake") amount = formatBNB(entry.amountStaked);
+    else if (type === "rewards") amount = formatBNB(entry.totalEarned);
 
-async function withdrawAll() {
-  try {
-    await contract.methods.withdrawAll().send({ from: userAddress });
-    alert('Retiro total exitoso');
-    await loadUserStats();
-    await loadAllStats();
-  } catch (error) {
-    console.error('Error al retirar:', error);
-    alert('Error al retirar.');
-  }
-}
+    const addr = entry.user;
+    const li = document.createElement("li");
+    li.textContent = `#${index + 1} ${addr.slice(0, 6)}...${addr.slice(-4)} - ${amount} BNB`;
+    ul.appendChild(li);
+  });
 
-async function withdrawAmount() {
-  const amount = document.getElementById('withdrawAmountInput').value;
-  if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-    return alert('Introduce una cantidad válida de BNB para retirar.');
+  if (list.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No hay datos disponibles.";
+    ul.appendChild(li);
   }
-
-  try {
-    const value = web3.utils.toWei(amount, 'ether');
-    await contract.methods.withdraw(value).send({ from: userAddress });
-    alert('Retiro parcial exitoso');
-    await loadUserStats();
-    await loadAllStats();
-  } catch (error) {
-    console.error('Error al retirar cantidad:', error);
-    alert('Error al retirar cantidad.');
-  }
-}
-
-async function claimRewards() {
-  try {
-    await contract.methods.claimRewards().send({ from: userAddress });
-    alert('Recompensas reclamadas');
-    await loadUserStats();
-    await loadAllStats();
-  } catch (error) {
-    console.error('Error al reclamar recompensas:', error);
-    alert('Error al reclamar recompensas.');
-  }
-}
-
-// Utilidades
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
 }
 
 function formatBNB(value) {
-  return parseFloat(web3.utils.fromWei(value, 'ether')).toFixed(4);
-}
-
-function formatAddress(address) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  try {
+    return Number(web3.utils.fromWei(value, "ether")).toFixed(4);
+  } catch {
+    return "0";
+  }
 }
 
 function formatTime(seconds) {
+  seconds = Number(seconds);
+  if (isNaN(seconds) || seconds <= 0) return "-";
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
   return `${hrs}h ${mins}m ${secs}s`;
+}
+
+async function stake() {
+  const input = document.getElementById("stakeAmount");
+  const amount = input.value;
+
+  if (!amount || Number(amount) <= 0) {
+    alert("Ingresa una cantidad válida para depositar.");
+    return;
+  }
+
+  try {
+    input.disabled = true;
+    await contract.methods.stake().send({
+      from: userAddress,
+      value: web3.utils.toWei(amount, "ether"),
+    });
+    alert("Stake realizado con éxito.");
+    input.value = "";
+    loadStats();
+  } catch (error) {
+    alert("Error al hacer stake: " + error.message);
+    console.error(error);
+  } finally {
+    input.disabled = false;
+  }
+}
+
+async function withdraw() {
+  const input = document.getElementById("withdrawAmount");
+  const amount = input.value;
+
+  if (!amount || Number(amount) <= 0) {
+    alert("Ingresa una cantidad válida para retirar.");
+    return;
+  }
+
+  try {
+    input.disabled = true;
+    await contract.methods.withdraw(web3.utils.toWei(amount, "ether")).send({
+      from: userAddress,
+    });
+    alert("Retiro realizado con éxito.");
+    input.value = "";
+    loadStats();
+  } catch (error) {
+    alert("Error al retirar: " + error.message);
+    console.error(error);
+  } finally {
+    input.disabled = false;
+  }
+}
+
+async function claim() {
+  try {
+    await contract.methods.claim().send({ from: userAddress });
+    alert("Dividendos reclamados con éxito.");
+    loadStats();
+  } catch (error) {
+    alert("Error al reclamar dividendos: " + error.message);
+    console.error(error);
+  }
+}
+
+function setLoading(isLoading) {
+  const elems = document.querySelectorAll(".card-value");
+  elems.forEach(el => {
+    el.style.opacity = isLoading ? "0.5" : "1";
+  });
+}
+
+// Modo claro/oscuro
+function toggleDarkMode() {
+  document.documentElement.classList.toggle("dark");
 }
