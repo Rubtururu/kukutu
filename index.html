@@ -41,18 +41,18 @@
     <div>
       <label for="stakeAmount">Cantidad a stakear (BNB): </label>
       <input type="number" id="stakeAmount" step="0.0001" min="0" />
-      <button onclick="stake()">Stake</button>
+      <button id="stakeButton">Stake</button>
     </div>
     <div>
-      <button onclick="withdrawStake()">Retirar todo el Stake</button>
+      <button id="withdrawStakeButton">Retirar todo el Stake</button>
     </div>
     <div>
       <label for="withdrawAmount">Cantidad a retirar parcialmente (BNB): </label>
       <input type="number" id="withdrawAmount" step="0.0001" min="0" />
-      <button onclick="withdrawPartialStake()">Retirar Parcial</button>
+      <button id="withdrawPartialButton">Retirar Parcial</button>
     </div>
     <div>
-      <button onclick="withdrawRewards()">Retirar Recompensas</button>
+      <button id="withdrawRewardsButton">Retirar Recompensas</button>
     </div>
   </section>
 
