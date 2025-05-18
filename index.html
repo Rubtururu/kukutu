@@ -71,11 +71,23 @@
       margin-bottom: 8px;
       color: #81c784;
     }
+    #walletAddress {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #90caf9;
+    }
   </style>
 </head>
 <body>
 
   <h1>Smart Staking BNB</h1>
+
+  <section>
+    <h2>Conexión de Wallet</h2>
+    <button onclick="connectWallet()">Conectar Wallet</button>
+    <div id="walletAddress">No conectado</div>
+  </section>
 
   <section>
     <h2>Estadísticas Globales</h2>
