@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Staking BNB Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Smart Staking BNB</h1>
+    <button id="connectBtn">Conectar Wallet</button>
+  </header>
+
+  <main>
+    <section class="stats">
+      <div class="card" id="totalStaked">Total Staked: Loading...</div>
+      <div class="card" id="totalTreasury">Treasury Pool: Loading...</div>
+      <div class="card" id="totalDividends">Total Dividends Distributed: Loading...</div>
+      <div class="card" id="totalUsers">Total Users: Loading...</div>
+      <div class="card" id="totalHistoricalStake">Historical Stake: Loading...</div>
+    </section>
+
+    <section class="user-panel">
+      <h2>Tu Panel</h2>
+      <div class="card" id="userStake">Tu Stake: Loading...</div>
+      <div class="card" id="userPending">Dividendos Pendientes: Loading...</div>
+      <div class="card" id="userDaily">Estimación Diaria: Loading...</div>
+      <div class="card" id="userRanking">Ranking en Stake: Loading...</div>
+      <div class="card" id="userDivRanking">Ranking en Dividendos: Loading...</div>
+      <div class="card" id="nextDistribution">Próxima Distribución: Loading...</div>
+
+      <div class="actions">
+        <input type="number" id="stakeAmount" placeholder="Cantidad BNB" />
+        <button onclick="stakeBNB()">Hacer Stake</button>
+        <button onclick="withdrawPartial()">Retirar Parcial</button>
+        <button onclick="withdrawAll()">Retirar Todo</button>
+        <button onclick="claimRewards()">Reclamar Dividendos</button>
+      </div>
+    </section>
+
+    <section class="rankings">
+      <h2>Top 50 en Stake</h2>
+      <ul id="topStakers"></ul>
+
+      <h2>Top 50 en Dividendos</h2>
+      <ul id="topEarners"></ul>
+    </section>
+
+    <section class="charts">
+      <h2>Histórico de Stake y Dividends</h2>
+      <canvas id="stakeChart"></canvas>
+      <canvas id="dividendChart"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Smart Staking BNB - Dashboard Avanzado</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
