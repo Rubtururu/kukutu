@@ -77,11 +77,19 @@ async function connectWallet() {
 
 async function loadAllStats() {
   try {
-    const stats = await contract.methods.getAllStats().call();
+    // Cambié a llamar a getGlobalStats que es la función correcta de tu ABI
+    const stats = await contract.methods.getGlobalStats().call();
+    
     document.getElementById('totalStaked').textContent = web3.utils.fromWei(stats._totalStaked, 'ether');
     document.getElementById('totalTreasury').textContent = web3.utils.fromWei(stats._totalTreasury, 'ether');
     document.getElementById('dailyDividend').textContent = web3.utils.fromWei(stats._dailyDividend, 'ether');
     document.getElementById('activeStakers').textContent = stats._activeStakers;
+
+    // También puedes mostrar otras estadísticas si quieres:
+    // document.getElementById('totalDividendsDistributed').textContent = web3.utils.fromWei(stats._totalDividendsDistributed, 'ether');
+    // document.getElementById('totalBNBStakedHistorical').textContent = web3.utils.fromWei(stats._totalBNBStakedHistorical, 'ether');
+    // document.getElementById('timeUntilNextDistribution').textContent = formatTime(stats._timeUntilNextDistribution);
+
   } catch (error) {
     console.error('Error cargando estadísticas globales:', error);
   }
@@ -90,22 +98,20 @@ async function loadAllStats() {
 async function loadUserStats() {
   try {
     const stats = await contract.methods.getUserStats(userAddress).call();
+
     const stakedBNB = web3.utils.fromWei(stats.stakedAmount, 'ether');
     const pendingRewardsBNB = web3.utils.fromWei(stats.pendingRewards, 'ether');
     const dailyEstimateBNB = web3.utils.fromWei(stats.dailyEstimate, 'ether');
     const userSharePercent = (parseFloat(stats.userShare) / 1e16).toFixed(2) + ' %';
 
-    const nextDistSeconds = parseInt(stats.nextDistributionIn);
-    const hours = Math.floor(nextDistSeconds / 3600);
-    const minutes = Math.floor((nextDistSeconds % 3600) / 60);
-    const seconds = nextDistSeconds % 60;
-    const countdown = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    // Nota: no veo en la ABI un campo nextDistributionIn para usuario, así que no muestro countdown aquí
+    // Si quieres mostrar tiempo hasta la siguiente distribución global, usa getGlobalStats
 
     document.getElementById('userStaked').textContent = stakedBNB;
     document.getElementById('userPendingRewards').textContent = pendingRewardsBNB;
     document.getElementById('userDailyEstimate').textContent = dailyEstimateBNB;
     document.getElementById('userShare').textContent = userSharePercent;
-    document.getElementById('userNextDistribution').textContent = countdown;
+
   } catch (error) {
     console.error('Error cargando estadísticas del usuario:', error);
   }
@@ -113,25 +119,9 @@ async function loadUserStats() {
 
 async function loadRankings() {
   try {
-    // El contrato debe tener funciones para obtener los rankings:
-    // Aquí simulamos la carga con ejemplos fijos, reemplaza con llamadas reales
-
-    // Ejemplo para ranking stake top 50
-    // const stakeTop = await contract.methods.getTopStakers().call();
-    // const dividendsTop = await contract.methods.getTopDividendReceivers().call();
-
-    // Simulamos con datos fijos para que veas la estructura
-    const stakeTop = [
-      { user: '0x123...abc', amount: web3.utils.toWei('10', 'ether') },
-      { user: '0x456...def', amount: web3.utils.toWei('8', 'ether') },
-      // ...
-    ];
-
-    const dividendsTop = [
-      { user: '0x789...ghi', amount: web3.utils.toWei('5', 'ether') },
-      { user: '0xabc...jkl', amount: web3.utils.toWei('4', 'ether') },
-      // ...
-    ];
+    // Obtener los top 50 stakers y earners del contrato
+    const topStakersAddresses = await contract.methods.getTopStakers().call();
+    const topEarnersAddresses = await contract.methods.getTopEarners().call();
 
     const stakeList = document.getElementById('stakeRankingList');
     const dividendsList = document.getElementById('dividendRankingList');
@@ -139,17 +129,26 @@ async function loadRankings() {
     stakeList.innerHTML = '';
     dividendsList.innerHTML = '';
 
-    stakeTop.forEach((entry, idx) => {
+    // Para mostrar cantidad stakeada y recibida, hay que llamar getUserStats para cada dirección
+    for (let i = 0; i < topStakersAddresses.length; i++) {
+      const addr = topStakersAddresses[i];
+      if (addr === '0x0000000000000000000000000000000000000000') continue; // saltar vacíos
+      const stats = await contract.methods.getUserStats(addr).call();
+      const staked = web3.utils.fromWei(stats.stakedAmount, 'ether');
       const li = document.createElement('li');
-      li.textContent = `#${idx+1} ${entry.user} - ${web3.utils.fromWei(entry.amount, 'ether')} BNB`;
+      li.textContent = `#${i + 1} ${addr} - ${staked} BNB`;
       stakeList.appendChild(li);
-    });
+    }
 
-    dividendsTop.forEach((entry, idx) => {
+    for (let i = 0; i < topEarnersAddresses.length; i++) {
+      const addr = topEarnersAddresses[i];
+      if (addr === '0x0000000000000000000000000000000000000000') continue;
+      const stats = await contract.methods.getUserStats(addr).call();
+      const earned = web3.utils.fromWei(stats.totalReceived, 'ether');
       const li = document.createElement('li');
-      li.textContent = `#${idx+1} ${entry.user} - ${web3.utils.fromWei(entry.amount, 'ether')} BNB`;
+      li.textContent = `#${i + 1} ${addr} - ${earned} BNB`;
       dividendsList.appendChild(li);
-    });
+    }
 
   } catch (error) {
     console.error('Error cargando rankings:', error);
@@ -213,4 +212,12 @@ async function withdrawRewards() {
     console.error('Error al retirar recompensas:', error);
     alert('Error al retirar recompensas.');
   }
+}
+
+// Función auxiliar para formatear segundos a hh:mm:ss si quieres usarla
+function formatTime(seconds) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
 }
