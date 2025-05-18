@@ -2,79 +2,94 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Staking BNB - dApp</title>
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Staking BNB</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
-<body>
-  <header>
-    <h1>Smart Staking BNB</h1>
-    <button id="connectWalletBtn">Conectar Wallet</button>
-    <p>Wallet conectada: <span id="walletAddress">No conectado</span></p>
-  </header>
-
-  <section>
-    <h2>Estadísticas Globales</h2>
-    <ul>
-      <li>Total Staked: <strong id="totalStaked">-</strong> BNB</li>
-      <li>Total Treasury: <strong id="totalTreasury">-</strong> BNB</li>
-      <li>Daily Dividend: <strong id="dailyDividend">-</strong> BNB</li>
-      <li>Active Stakers: <strong id="activeStakers">-</strong></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Mis Estadísticas</h2>
-    <ul>
-      <li>BNB Staked: <strong id="userStaked">-</strong> BNB</li>
-      <li>Pending Rewards: <strong id="userPendingRewards">-</strong> BNB</li>
-      <li>Daily Dividend Estimate: <strong id="userDailyEstimate">-</strong> BNB</li>
-      <li>Mi Share: <strong id="userShare">-</strong></li>
-      <li>Próximo Pago en: <strong id="countdown">Cargando...</strong></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Acciones</h2>
-    <div>
-      <label for="stakeAmount">Cantidad a stakear (BNB): </label>
-      <input type="number" id="stakeAmount" step="0.0001" min="0" />
-      <button id="stakeButton">Stake</button>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+  <div class="container mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold mb-2">Smart Staking BNB Dashboard</h1>
+      <button id="connectWalletBtn" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded">Conectar Wallet</button>
+      <p class="mt-2 text-sm">Wallet conectada: <span id="walletAddress" class="font-mono text-green-400">No conectada</span></p>
     </div>
-    <div>
-      <button id="withdrawStakeButton">Retirar todo el Stake</button>
-    </div>
-    <div>
-      <label for="withdrawAmount">Cantidad a retirar parcialmente (BNB): </label>
-      <input type="number" id="withdrawAmount" step="0.0001" min="0" />
-      <button id="withdrawPartialButton">Retirar Parcial</button>
-    </div>
-    <div>
-      <button id="withdrawRewardsButton">Retirar Recompensas</button>
-    </div>
-  </section>
 
-  <section>
-    <h2>Ranking Top 50 Stakers</h2>
-    <ol id="stakeRankingList">
-      <li>Cargando...</li>
-    </ol>
-  </section>
+    <!-- Estadísticas Globales -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">Total Staked</h2>
+        <p id="totalStaked" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">Treasury</h2>
+        <p id="totalTreasury" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">Dividendos Diarios</h2>
+        <p id="dailyDividend" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">Stakers Activos</h2>
+        <p id="activeStakers" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">BNB Históricos Stakeados</h2>
+        <p id="totalBNBStakedHistorical" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <h2 class="text-lg font-bold">Dividendos Totales Distribuidos</h2>
+        <p id="totalDividendsDistributed" class="text-2xl mt-1">Loading...</p>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow-lg col-span-full">
+        <h2 class="text-lg font-bold">Tiempo Hasta Siguiente Distribución</h2>
+        <p id="timeUntilNextDistribution" class="text-2xl mt-1">Loading...</p>
+      </div>
+    </section>
 
-  <section>
-    <h2>Ranking Top 50 Dividendos</h2>
-    <ol id="dividendRankingList">
-      <li>Cargando...</li>
-    </ol>
-  </section>
+    <!-- Estadísticas del Usuario -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Tus Estadísticas</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-700 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">BNB Stakeados</h3>
+          <p id="userStaked" class="text-xl mt-1">Loading...</p>
+        </div>
+        <div class="bg-gray-700 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Recompensas Pendientes</h3>
+          <p id="userPendingRewards" class="text-xl mt-1">Loading...</p>
+        </div>
+        <div class="bg-gray-700 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Total Recibido</h3>
+          <p id="userTotalReceived" class="text-xl mt-1">Loading...</p>
+        </div>
+        <div class="bg-gray-700 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Estimación Diaria</h3>
+          <p id="userDailyEstimate" class="text-xl mt-1">Loading...</p>
+        </div>
+        <div class="bg-gray-700 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Participación (%)</h3>
+          <p id="userShare" class="text-xl mt-1">Loading...</p>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h2>Histórico Pool de Dividendos</h2>
-    <canvas id="dividendChart" width="600" height="300"></canvas>
-  </section>
+    <!-- Rankings -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Top 50 Rankings</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold mb-2">Top Stakers</h3>
+          <ul id="stakeRankingList" class="space-y-1 text-sm font-mono max-h-96 overflow-y-auto">Cargando...</ul>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold mb-2">Top Ganadores</h3>
+          <ul id="dividendRankingList" class="space-y-1 text-sm font-mono max-h-96 overflow-y-auto">Cargando...</ul>
+        </div>
+      </div>
+    </section>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
