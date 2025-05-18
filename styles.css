@@ -5,253 +5,344 @@
   box-sizing: border-box;
 }
 
+/* Tipografía moderna y colores neutros */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  background-color: #f0f2f5;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  background-color: #f9fafb;
   color: #222;
   padding: 20px;
-  transition: background-color 0.3s, color 0.3s;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Modo oscuro automático */
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #121212;
-    color: #eee;
+    color: #ddd;
   }
   header, section {
-    background-color: #1e1e1e;
-    box-shadow: 0 0 15px rgba(255 255 255 / 0.05);
+    background-color: #1a1a1a;
+    box-shadow: 0 0 20px rgba(255 255 255 / 0.05);
   }
   input, button {
-    background-color: #333;
-    color: #eee;
+    background-color: #222;
+    color: #ddd;
   }
   input::placeholder {
-    color: #bbb;
+    color: #888;
   }
 }
 
-/* Contenedor principal */
+/* Contenedor principal con sombras suaves y bordes redondeados */
 header, section {
   background-color: #fff;
   width: 100%;
-  max-width: 800px;
-  margin-bottom: 20px;
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, box-shadow 0.3s;
+  max-width: 720px;
+  margin-bottom: 24px;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 102, 255, 0.12);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Header */
+/* Header flex moderno y accesible */
 header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   font-weight: 700;
-  font-size: 1.4rem;
-  color: #0066ff;
+  font-size: 1.5rem;
+  color: #0056d2;
 }
 
 header h1 {
   flex-grow: 1;
-  font-size: 2rem;
+  font-size: 2.4rem;
+  user-select: none;
+  letter-spacing: 0.04em;
 }
 
 #walletAddress {
+  font-family: 'Fira Mono', monospace;
   font-weight: 600;
-  font-family: monospace;
-  color: #444;
+  color: #4b4b4b;
+  user-select: text;
+  word-break: break-all;
+  background: #f0f4ff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px #c9d6ff;
+  transition: background-color 0.3s ease;
 }
 
+#walletAddress:hover {
+  background: #dde6ff;
+}
+
+/* Botón principal con gradiente y sombras */
 button#connectWalletBtn {
-  padding: 10px 20px;
-  border-radius: 30px;
-  background: linear-gradient(90deg, #0077ff, #00c6ff);
+  padding: 12px 28px;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #1e90ff, #00bfff);
   border: none;
-  color: white;
-  font-weight: 600;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0, 118, 255, 0.5);
-  transition: background 0.4s, box-shadow 0.4s;
+  box-shadow: 0 6px 18px rgba(30, 144, 255, 0.6);
+  transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
 }
 
 button#connectWalletBtn:hover {
-  background: linear-gradient(90deg, #005bb5, #0099cc);
-  box-shadow: 0 8px 25px rgba(0, 118, 255, 0.7);
+  background: linear-gradient(135deg, #0066cc, #0099ff);
+  box-shadow: 0 8px 26px rgba(0, 102, 204, 0.8);
+  transform: scale(1.06);
 }
 
-/* Secciones */
+button#connectWalletBtn:active {
+  transform: scale(0.95);
+}
+
+/* Secciones con títulos destacados */
 section h2 {
-  margin-bottom: 18px;
-  font-size: 1.6rem;
-  color: #0047b3;
-  border-bottom: 3px solid #00aaff;
-  padding-bottom: 6px;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #0046b8;
+  border-bottom: 3px solid #007aff;
+  padding-bottom: 8px;
   font-weight: 700;
+  user-select: none;
 }
 
+/* Listas estilizadas */
 ul {
   list-style: none;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 ul li {
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  padding: 8px 14px;
-  background: #e7f1ff;
-  border-radius: 10px;
-  transition: background-color 0.3s;
+  margin-bottom: 12px;
+  font-size: 1.15rem;
+  padding: 12px 16px;
+  background: #e5f0ff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 102, 204, 0.12);
+  transition: background-color 0.3s ease;
+  user-select: text;
 }
 
 ul li strong {
-  color: #003d99;
+  color: #003a99;
+  font-weight: 700;
 }
 
 ul li:hover {
-  background: #c4e0ff;
+  background: #cce2ff;
 }
 
-/* Mis estadísticas - color distinto */
+/* Color especial para sección "Mis estadísticas" */
 section:nth-of-type(3) ul li {
-  background: #fff3e0;
-  color: #6d4c41;
+  background: #fff7e6;
+  color: #6e4e30;
+  box-shadow: 0 1px 6px rgba(166, 124, 0, 0.2);
 }
 
 section:nth-of-type(3) ul li strong {
-  color: #a67c00;
+  color: #b78f00;
 }
 
 section:nth-of-type(3) ul li:hover {
-  background: #ffe0b2;
+  background: #ffe4a0;
 }
 
-/* Inputs y botones */
+/* Inputs numéricos con bordes más visibles */
 input[type="number"] {
-  width: 120px;
-  padding: 8px 12px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 2px solid #0099ff;
+  width: 130px;
+  padding: 10px 14px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2.5px solid #0099ff;
   outline-offset: 2px;
-  transition: border-color 0.3s;
-  margin-right: 12px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  margin-right: 16px;
   color: #222;
+  background-color: #fefefe;
+  font-weight: 500;
+  user-select: text;
 }
 
 input[type="number"]::placeholder {
-  color: #aaa;
+  color: #999;
+  font-weight: 400;
 }
 
 input[type="number"]:focus {
   border-color: #005bb5;
+  background-color: #e6f3ff;
 }
 
-/* Botones de acción */
+/* Botones de acción con sombra y animaciones */
 button {
-  padding: 10px 18px;
-  font-size: 1rem;
+  padding: 12px 20px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 25px;
-  background: linear-gradient(135deg, #0066ff, #00c6ff);
+  border-radius: 30px;
+  background: linear-gradient(135deg, #1e90ff, #00bfff);
   color: white;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 118, 255, 0.5);
-  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+  box-shadow: 0 5px 18px rgba(30, 144, 255, 0.5);
+  transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.15s ease;
   user-select: none;
-  min-width: 130px;
-  margin-top: 10px;
+  min-width: 140px;
+  margin-top: 14px;
+  white-space: nowrap;
 }
 
 button:hover {
-  background: linear-gradient(135deg, #004aad, #0099cc);
-  box-shadow: 0 6px 25px rgba(0, 118, 255, 0.7);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #0066cc, #0099ff);
+  box-shadow: 0 7px 28px rgba(0, 102, 204, 0.7);
+  transform: scale(1.07);
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
-/* Acciones agrupadas */
+/* Agrupación flexible de botones y inputs */
 section:nth-of-type(4) > div {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
-/* Listas de ranking */
+/* Ranking con scroll y estilos pulidos */
 ol {
-  max-height: 300px;
+  max-height: 320px;
   overflow-y: auto;
-  padding-left: 20px;
+  padding-left: 22px;
+  border-radius: 16px;
+  background: #e9f2ff;
+  box-shadow: inset 0 0 10px #b4d1ff;
+  scrollbar-width: thin;
+  scrollbar-color: #007aff #dbe9ff;
+}
+
+ol::-webkit-scrollbar {
+  width: 8px;
+}
+
+ol::-webkit-scrollbar-track {
+  background: #dbe9ff;
   border-radius: 12px;
-  background: #f0f8ff;
-  box-shadow: inset 0 0 6px #cce7ff;
+}
+
+ol::-webkit-scrollbar-thumb {
+  background-color: #007aff;
+  border-radius: 12px;
+  border: 2px solid #dbe9ff;
 }
 
 ol li {
-  padding: 8px 12px;
+  padding: 12px 16px;
   font-weight: 600;
   color: #004080;
-  border-bottom: 1px solid #d0e8ff;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #c3d8ff;
+  transition: background-color 0.25s ease;
   cursor: default;
+  user-select: text;
 }
 
 ol li:hover {
-  background-color: #a3c6ff;
+  background-color: #a6c9ff;
   color: #00264d;
 }
 
-/* Gráfica */
+/* Gráfica estilizada */
 canvas#dividendChart {
-  margin-top: 20px;
+  margin-top: 24px;
   width: 100% !important;
-  max-width: 750px;
-  height: 320px !important;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-  background: linear-gradient(180deg, #e6f0ff 0%, #ffffff 100%);
+  max-width: 720px;
+  height: 340px !important;
+  border-radius: 18px;
+  box-shadow:
+    0 8px 28px rgba(0, 102, 255, 0.32);
+  background: linear-gradient(180deg, #e9f4ff 0%, #ffffff 100%);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* Responsive - diseño móvil mucho mejorado */
+@media (max-width: 720px) {
+  body {
+    padding: 12px 16px;
+  }
   header {
     flex-direction: column;
     align-items: flex-start;
+    padding: 18px 20px;
+    gap: 14px;
+  }
+  header h1 {
+    font-size: 1.8rem;
+    width: 100%;
+  }
+  #walletAddress {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
   }
   button#connectWalletBtn {
     width: 100%;
+    padding: 14px 0;
+    font-size: 1.1rem;
   }
   section {
-    padding: 15px 20px;
+    padding: 20px 24px;
+    max-width: 100%;
   }
   input[type="number"] {
     width: 100%;
     margin-right: 0;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    font-size: 1rem;
   }
   section:nth-of-type(4) > div {
     flex-direction: column;
     align-items: stretch;
+    gap: 14px;
   }
   button {
     width: 100%;
+    min-width: auto;
   }
   ol {
     max-height: 220px;
+  }
+}
+
+/* Extra pequeño para tablets */
+@media (max-width: 450px) {
+  section h2 {
+    font-size: 1.5rem;
+  }
+  ul li, ol li {
+    font-size: 1rem;
+    padding: 10px 14px;
+  }
+  button, button#connectWalletBtn {
+    font-size: 1rem;
+    padding: 10px 16px;
   }
 }
