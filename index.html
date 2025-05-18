@@ -77,6 +77,17 @@
       margin: 10px 0;
       color: #90caf9;
     }
+    #networkWarning {
+      color: #ff5252;
+      text-align: center;
+      margin-top: 10px;
+    }
+    #status {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #ffc107;
+    }
   </style>
 </head>
 <body>
@@ -85,8 +96,10 @@
 
   <section>
     <h2>Conexión de Wallet</h2>
-    <button onclick="connectWallet()">Conectar Wallet</button>
+    <button id="connectBtn" onclick="connectWallet()">Conectar Wallet</button>
     <div id="walletAddress">No conectado</div>
+    <div id="networkWarning"></div>
+    <div id="status"></div>
   </section>
 
   <section>
