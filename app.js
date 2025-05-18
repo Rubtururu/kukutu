@@ -1,162 +1,205 @@
-const contractAddress = '0x4f395877f7f82b5012F9d4aD092249444A93258e';
-const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"DividendsDistributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"activeStakers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributeDividends","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getGlobalStats","outputs":[{"internalType":"uint256","name":"_totalStaked","type":"uint256"},{"internalType":"uint256","name":"_totalTreasury","type":"uint256"},{"internalType":"uint256","name":"_totalDividendsDistributed","type":"uint256"},{"internalType":"uint256","name":"_totalBNBStakedHistorical","type":"uint256"},{"internalType":"uint256","name":"_dailyDividend","type":"uint256"},{"internalType":"uint256","name":"_activeStakers","type":"uint256"},{"internalType":"uint256","name":"_timeUntilNextDistribution","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopEarners","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopStakers","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserStats","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"},{"internalType":"uint256","name":"dailyEstimate","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"hasStaked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastDistribution","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakerList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBNBStakedHistorical","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalDividendsDistributed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTreasury","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastUpdate","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawPartialStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]; // (ABI completo, como ya está)
-
-let web3;
-let contract;
-let userAddress;
-let dividendChart;
-
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('connectWalletBtn')?.addEventListener('click', connectWallet);
-
-  const ctx = document.getElementById('dividendChart')?.getContext('2d');
-  if (ctx) {
-    dividendChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'Pool de Dividendos (BNB)',
-          data: [],
-          borderColor: '#00bfa6',
-          backgroundColor: 'rgba(0, 191, 166, 0.2)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        }]
-      },
-      options: {
-        responsive: true,
-        animation: {
-          duration: 1000,
-          easing: 'easeInOutQuad'
-        },
-        plugins: {
-          legend: { labels: { color: '#ccc' } },
-          tooltip: { mode: 'index', intersect: false }
-        },
-        scales: {
-          x: {
-            ticks: { color: '#999' },
-            grid: { color: 'rgba(255,255,255,0.05)' }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { color: '#999' },
-            grid: { color: 'rgba(255,255,255,0.05)' }
-          }
-        }
-      }
-    });
-  }
-});
+const web3 = new Web3(window.ethereum);
+const contractAddress = "0x4f395877f7f82b5012F9d4aD092249444A93258e";
+const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"DividendsDistributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"activeStakers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributeDividends","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getGlobalStats","outputs":[{"internalType":"uint256","name":"_totalStaked","type":"uint256"},{"internalType":"uint256","name":"_totalTreasury","type":"uint256"},{"internalType":"uint256","name":"_totalDividendsDistributed","type":"uint256"},{"internalType":"uint256","name":"_totalBNBStakedHistorical","type":"uint256"},{"internalType":"uint256","name":"_dailyDividend","type":"uint256"},{"internalType":"uint256","name":"_activeStakers","type":"uint256"},{"internalType":"uint256","name":"_timeUntilNextDistribution","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopEarners","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopStakers","outputs":[{"internalType":"address[50]","name":"","type":"address[50]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserStats","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"},{"internalType":"uint256","name":"dailyEstimate","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"hasStaked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastDistribution","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakerList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBNBStakedHistorical","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalDividendsDistributed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTreasury","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastUpdate","type":"uint256"},{"internalType":"uint256","name":"totalReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawPartialStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+const contract = new web3.eth.Contract(abi, contractAddress);
 
 async function connectWallet() {
-  if (!window.ethereum) return alert('Por favor instala MetaMask.');
-
   try {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
-    web3 = new Web3(window.ethereum);
-    const accounts = await web3.eth.getAccounts();
-    userAddress = accounts[0];
-    contract = new web3.eth.Contract(contractABI, contractAddress);
-    document.getElementById('walletAddress').textContent = userAddress;
-
-    await loadAllStats();
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    window.userAddress = accounts[0];
+    document.getElementById("wallet-address").textContent = window.userAddress;
+    await loadStats();
     await loadUserStats();
-    await loadRankings();
-    setInterval(async () => {
-      if (userAddress && contract) {
-        await loadAllStats();
-        await loadUserStats();
-        await loadRankings();
-      }
-    }, 30000);
-
-  } catch (err) {
-    console.error(err);
-    alert('Error conectando la wallet. Revisa la consola.');
+    await loadTopLists();
+    await drawDividendChart();
+    await loadCountdown();
+  } catch (error) {
+    console.error("Wallet connection failed:", error);
   }
 }
 
-async function loadAllStats() {
+async function loadStats() {
   try {
-    const stats = await contract.methods.getGlobalStats().call();
+    const totalStaked = await contract.methods.totalStaked().call();
+    const totalTreasury = await contract.methods.totalTreasury().call();
+    const totalDividend = await contract.methods.getTotalDailyDividend().call();
+    const users = await contract.methods.getStakingUsersCount().call();
 
-    const totalStaked = parseFloat(web3.utils.fromWei(stats._totalStaked, 'ether'));
-    const treasury = parseFloat(web3.utils.fromWei(stats._totalTreasury, 'ether'));
-    const dividend = parseFloat(web3.utils.fromWei(stats._dailyDividend, 'ether'));
-
-    document.getElementById('totalStaked').textContent = totalStaked.toFixed(4);
-    document.getElementById('totalTreasury').textContent = treasury.toFixed(4);
-    document.getElementById('dailyDividend').textContent = dividend.toFixed(4);
-    document.getElementById('activeStakers').textContent = stats._activeStakers;
-
-    updateChart(dividend);
-  } catch (err) {
-    console.error('Error stats globales:', err);
+    document.getElementById("total-staked").textContent = web3.utils.fromWei(totalStaked) + " BNB";
+    document.getElementById("total-treasury").textContent = web3.utils.fromWei(totalTreasury) + " BNB";
+    document.getElementById("total-dividends").textContent = web3.utils.fromWei(totalDividend) + " BNB";
+    document.getElementById("total-users").textContent = users;
+  } catch (error) {
+    console.error("Error loading stats:", error);
   }
-}
-
-function updateChart(newValue) {
-  if (!dividendChart) return;
-  const chart = dividendChart;
-  const now = new Date();
-  const label = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-  chart.data.labels.push(label);
-  chart.data.datasets[0].data.push(newValue);
-
-  if (chart.data.labels.length > 10) {
-    chart.data.labels.shift();
-    chart.data.datasets[0].data.shift();
-  }
-  chart.update();
 }
 
 async function loadUserStats() {
   try {
-    const stats = await contract.methods.getUserStats(userAddress).call();
-    document.getElementById('userStaked').textContent = web3.utils.fromWei(stats.stakedAmount, 'ether');
-    document.getElementById('userPendingRewards').textContent = web3.utils.fromWei(stats.pendingRewards, 'ether');
-    document.getElementById('userDailyEstimate').textContent = web3.utils.fromWei(stats.dailyEstimate, 'ether');
-    document.getElementById('userShare').textContent = (parseFloat(stats.userShare) / 1e16).toFixed(2) + '%';
-  } catch (err) {
-    console.error('Error user stats:', err);
+    const userStake = await contract.methods.stakedAmount(window.userAddress).call();
+    const userShare = await contract.methods.getUserShare(window.userAddress).call();
+    const userPending = await contract.methods.getPendingRewards(window.userAddress).call();
+    const dailyEstimate = await contract.methods.getUserDailyDividendEstimate(window.userAddress).call();
+
+    document.getElementById("user-staked").textContent = web3.utils.fromWei(userStake) + " BNB";
+    document.getElementById("user-share").textContent = userShare + " %";
+    document.getElementById("user-rewards").textContent = web3.utils.fromWei(userPending) + " BNB";
+    document.getElementById("user-daily").textContent = web3.utils.fromWei(dailyEstimate) + " BNB";
+  } catch (error) {
+    console.error("Error loading user stats:", error);
   }
 }
 
-async function loadRankings() {
+async function stakeBNB() {
+  const amount = document.getElementById("stake-amount").value;
+  if (!amount || isNaN(amount)) return alert("Invalid amount");
+  try {
+    await contract.methods.stake().send({ from: window.userAddress, value: web3.utils.toWei(amount) });
+    await loadStats();
+    await loadUserStats();
+    await loadCountdown();
+  } catch (error) {
+    console.error("Staking failed:", error);
+  }
+}
+
+async function withdrawAll() {
+  try {
+    await contract.methods.withdrawAll().send({ from: window.userAddress });
+    await loadStats();
+    await loadUserStats();
+    await loadCountdown();
+  } catch (error) {
+    console.error("Withdraw all failed:", error);
+  }
+}
+
+async function withdrawPartial() {
+  const amount = document.getElementById("withdraw-amount").value;
+  if (!amount || isNaN(amount)) return alert("Invalid amount");
+  try {
+    await contract.methods.withdrawPartial(web3.utils.toWei(amount)).send({ from: window.userAddress });
+    await loadStats();
+    await loadUserStats();
+    await loadCountdown();
+  } catch (error) {
+    console.error("Partial withdrawal failed:", error);
+  }
+}
+
+async function claimRewards() {
+  try {
+    await contract.methods.claimRewards().send({ from: window.userAddress });
+    await loadStats();
+    await loadUserStats();
+    await loadCountdown();
+  } catch (error) {
+    console.error("Claim failed:", error);
+  }
+}
+
+async function loadTopLists() {
   try {
     const topStakers = await contract.methods.getTopStakers().call();
     const topEarners = await contract.methods.getTopEarners().call();
 
-    const stakeList = document.getElementById('stakeRankingList');
-    const earnList = document.getElementById('dividendRankingList');
-    stakeList.innerHTML = '';
-    earnList.innerHTML = '';
+    const stakersTable = document.getElementById("top-stakers");
+    stakersTable.innerHTML = topStakers.map(([addr, amount], i) =>
+      `<tr><td>#${i + 1}</td><td>${addr}</td><td>${web3.utils.fromWei(amount)} BNB</td></tr>`
+    ).join("");
 
-    for (let i = 0; i < topStakers.length; i++) {
-      const addr = topStakers[i];
-      if (addr === '0x0000000000000000000000000000000000000000') continue;
-      const stats = await contract.methods.getUserStats(addr).call();
-      const staked = web3.utils.fromWei(stats.stakedAmount, 'ether');
-      const li = document.createElement('li');
-      li.textContent = `#${i + 1} ${addr.slice(0, 6)}...${addr.slice(-4)} - ${staked} BNB`;
-      stakeList.appendChild(li);
-    }
-
-    for (let i = 0; i < topEarners.length; i++) {
-      const addr = topEarners[i];
-      if (addr === '0x0000000000000000000000000000000000000000') continue;
-      const stats = await contract.methods.getUserStats(addr).call();
-      const received = web3.utils.fromWei(stats.totalReceived, 'ether');
-      const li = document.createElement('li');
-      li.textContent = `#${i + 1} ${addr.slice(0, 6)}...${addr.slice(-4)} - ${received} BNB`;
-      earnList.appendChild(li);
-    }
-  } catch (err) {
-    console.error('Error cargando rankings:', err);
+    const earnersTable = document.getElementById("top-earners");
+    earnersTable.innerHTML = topEarners.map(([addr, amount], i) =>
+      `<tr><td>#${i + 1}</td><td>${addr}</td><td>${web3.utils.fromWei(amount)} BNB</td></tr>`
+    ).join("");
+  } catch (error) {
+    console.error("Error loading top lists:", error);
   }
 }
+
+async function drawDividendChart() {
+  try {
+    const { labels, values } = await contract.methods.getHistoricalDailyDividends().call();
+
+    const data = {
+      labels,
+      datasets: [{
+        label: 'BNB Dividend Pool',
+        data: values.map(v => web3.utils.fromWei(v)),
+        backgroundColor: 'rgba(0, 200, 255, 0.6)',
+        borderColor: 'rgba(0, 200, 255, 1)',
+        fill: true,
+        tension: 0.4
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    const ctx = document.getElementById('dividend-chart').getContext('2d');
+    if (window.dividendChart) window.dividendChart.destroy();
+    window.dividendChart = new Chart(ctx, config);
+  } catch (error) {
+    console.error("Error drawing chart:", error);
+  }
+}
+
+function updateCountdown(secondsRemaining) {
+  const countdownEl = document.getElementById("next-distribution");
+  if (!countdownEl) return;
+
+  function formatTime(secs) {
+    const h = Math.floor(secs / 3600).toString().padStart(2, '0');
+    const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0');
+    const s = (secs % 60).toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  }
+
+  countdownEl.textContent = formatTime(secondsRemaining);
+
+  const interval = setInterval(() => {
+    secondsRemaining--;
+    if (secondsRemaining <= 0) {
+      clearInterval(interval);
+      countdownEl.textContent = "00:00:00";
+      return;
+    }
+    countdownEl.textContent = formatTime(secondsRemaining);
+  }, 1000);
+}
+
+async function loadCountdown() {
+  if (!window.userAddress) return;
+  try {
+    const seconds = await contract.methods.getTimeUntilNextDistribution(window.userAddress).call();
+    updateCountdown(parseInt(seconds));
+  } catch (error) {
+    console.error("Error loading countdown:", error);
+  }
+}
+
+// Auto update every 30 seconds
+setInterval(async () => {
+  await loadStats();
+  await loadUserStats();
+  await loadTopLists();
+  await drawDividendChart();
+  await loadCountdown();
+}, 30000);
+
+// Auto connect if MetaMask already connected
+window.addEventListener('load', async () => {
+  if (window.ethereum && window.ethereum.selectedAddress) {
+    await connectWallet();
+  }
+});
