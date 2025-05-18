@@ -8,14 +8,14 @@ let userAddress;
 
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
+  document.getElementById('stakeBtn').addEventListener('click', stakeBNB);
+  document.getElementById('withdrawAllBtn').addEventListener('click', withdrawAll);
+  document.getElementById('withdrawAmountBtn').addEventListener('click', withdrawAmount);
+  document.getElementById('claimBtn').addEventListener('click', claimRewards);
 });
 
 async function connectWallet() {
-  if (!window.ethereum) {
-    alert('MetaMask no está instalado.');
-    return;
-  }
-
+  if (!window.ethereum) return alert('MetaMask no está instalado.');
   try {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
     web3 = new Web3(window.ethereum);
@@ -25,12 +25,10 @@ async function connectWallet() {
     contract = new web3.eth.Contract(contractABI, contractAddress);
     document.getElementById('walletAddress').textContent = formatAddress(userAddress);
 
-    // Cargar estadísticas y rankings
     await loadAllStats();
     await loadUserStats();
     await loadRankings();
 
-    // Refrescar cada 30s
     setInterval(() => {
       loadAllStats();
       loadUserStats();
@@ -39,10 +37,10 @@ async function connectWallet() {
 
   } catch (error) {
     console.error('Error al conectar la wallet:', error);
-    alert('Hubo un error al conectar la wallet.');
   }
 }
 
+// Cargar estadísticas
 async function loadAllStats() {
   try {
     const stats = await contract.methods.getGlobalStats().call();
@@ -105,7 +103,68 @@ async function loadRankings() {
   }
 }
 
-// Helpers
+// Funciones de staking
+async function stakeBNB() {
+  const amount = document.getElementById('stakeAmountInput').value;
+  if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+    return alert('Introduce una cantidad válida de BNB para hacer stake.');
+  }
+
+  try {
+    const value = web3.utils.toWei(amount, 'ether');
+    await contract.methods.stake().send({ from: userAddress, value });
+    alert('Stake exitoso');
+    await loadUserStats();
+    await loadAllStats();
+  } catch (error) {
+    console.error('Error al hacer stake:', error);
+    alert('Error al hacer stake.');
+  }
+}
+
+async function withdrawAll() {
+  try {
+    await contract.methods.withdrawAll().send({ from: userAddress });
+    alert('Retiro total exitoso');
+    await loadUserStats();
+    await loadAllStats();
+  } catch (error) {
+    console.error('Error al retirar:', error);
+    alert('Error al retirar.');
+  }
+}
+
+async function withdrawAmount() {
+  const amount = document.getElementById('withdrawAmountInput').value;
+  if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+    return alert('Introduce una cantidad válida de BNB para retirar.');
+  }
+
+  try {
+    const value = web3.utils.toWei(amount, 'ether');
+    await contract.methods.withdraw(value).send({ from: userAddress });
+    alert('Retiro parcial exitoso');
+    await loadUserStats();
+    await loadAllStats();
+  } catch (error) {
+    console.error('Error al retirar cantidad:', error);
+    alert('Error al retirar cantidad.');
+  }
+}
+
+async function claimRewards() {
+  try {
+    await contract.methods.claimRewards().send({ from: userAddress });
+    alert('Recompensas reclamadas');
+    await loadUserStats();
+    await loadAllStats();
+  } catch (error) {
+    console.error('Error al reclamar recompensas:', error);
+    alert('Error al reclamar recompensas.');
+  }
+}
+
+// Utilidades
 function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
